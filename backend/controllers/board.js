@@ -78,8 +78,18 @@ const deleteTask = async (req, res) => {
   const validId = mongoose.Types.ObjectId.isValid(req.params._id);
   if (!validId) return res.status(400).send("Invalid id");
 
+  let taskImg = await Board.findById(req.params._id);
+  taskImg = taskImg.imageUrl;
+  taskImg = taskImg.split("/")[4];
+  let serverImg = "./uploads/" + taskImg;
+
   const board = await Board.findByIdAndDelete(req.params._id);
   if (!board) return res.status(400).send("Task not found");
+  try {
+    fs.unlinkSync(serverImg);
+  } catch (err) {
+    console.log("Image no found in server");
+  }
   return res.status(200).send({ message: "Task deleted" });
 };
 

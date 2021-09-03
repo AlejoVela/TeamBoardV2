@@ -51,6 +51,7 @@ const login = async (req, res) => {
   }
 };
 
+
 const listUser = async (req, res) => {
   const users = await User.find({
     $and: [{ name: new RegExp(req.params["name"], "i") }, { dbStatus: "true" }],
@@ -61,9 +62,9 @@ const listUser = async (req, res) => {
     return res.status(400).send("No search results");
   return res.status(200).send({ users });
 };
-
+//y aca todos
 const listUserAll = async (req, res) => {
-  const users = await User.find({ name: new RegExp(req.params["name"], "i") })
+    users = await User.find({ name: new RegExp(req.params["name"], "i") })
     .populate("roleId")
     .exec();
   if (!users || users.length === 0)
